@@ -25,7 +25,7 @@ services:
     container_name: ca_peerOrg1
     networks:
       - basic
-  
+
   ca.org2.example.com:
     image: hyperledger/fabric-ca
     environment:
@@ -42,7 +42,7 @@ services:
     container_name: ca_peerOrg2
     networks:
       - basic
-	  
+
   orderer.example.com:
     container_name: orderer.example.com
     image: hyperledger/fabric-orderer
