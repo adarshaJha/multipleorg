@@ -1,5 +1,5 @@
-# multipleorg
-Multi Org/Peer
+# Multiple Org
+## Multi Org/Peer
 
 You will be provisioning a local network with the following docker container configuration:
 
