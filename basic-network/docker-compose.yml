@@ -9,22 +9,40 @@ networks:
   basic:
 
 services:
-  ca.example.com:
+  ca.org1.example.com:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.example.com
+      - FABRIC_CA_SERVER_CA_NAME=ca-org1
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.example.com-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/49f63cfb4c57f024395bc02e1350e3cea87ba0c4d7017ccb046b113f80a1c36a_sk
+      # - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/49f63cfb4c57f024395bc02e1350e3cea87ba0c4d7017ccb046b113f80a1c36a_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/c0a4a8798a67120b712796991d876f4233111ebb1cd068158bcc52a5d9362c18_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca.example.com
+    container_name: ca_peerOrg1
     networks:
       - basic
-
+  
+  ca.org2.example.com:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-org2
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.example.com-cert.pem
+      # - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/49f63cfb4c57f024395bc02e1350e3cea87ba0c4d7017ccb046b113f80a1c36a_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/c0a4a8798a67120b712796991d876f4233111ebb1cd068158bcc52a5d9362c18_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerOrg2
+    networks:
+      - basic
+	  
   orderer.example.com:
     container_name: orderer.example.com
     image: hyperledger/fabric-orderer
@@ -65,6 +83,7 @@ services:
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org1.example.com:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org1.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org1.example.com:7051
       # # the following setting starts chaincode containers on the same
@@ -83,6 +102,7 @@ services:
     # command: peer node start --peer-chaincodedev=true
     ports:
       - 7051:7051
+      - 7052:7052
       - 7053:7053
     volumes:
         - /var/run/:/host/var/run/
@@ -119,6 +139,7 @@ services:
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer1.org1.example.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org1.example.com:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org1.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org1.example.com:7051
       # # the following setting starts chaincode containers on the same
@@ -137,6 +158,7 @@ services:
     # command: peer node start --peer-chaincodedev=true
     ports:
       - 8051:7051
+      - 8052:7052
       - 8053:7053
     volumes:
         - /var/run/:/host/var/run/
@@ -173,6 +195,7 @@ services:
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer0.org2.example.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer0.org2.example.com:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:7051
       # # the following setting starts chaincode containers on the same
@@ -191,6 +214,7 @@ services:
     # command: peer node start --peer-chaincodedev=true
     ports:
       - 9051:7051
+      - 9052:7051
       - 9053:7053
     volumes:
         - /var/run/:/host/var/run/
@@ -227,6 +251,7 @@ services:
       - CORE_PEER_LOCALMSPID=Org2MSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer1.org2.example.com:7051
+      - CORE_PEER_CHAINCODELISTENADDRESS=peer1.org2.example.com:7052
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.example.com:7051
       # # the following setting starts chaincode containers on the same
@@ -245,6 +270,7 @@ services:
     # command: peer node start --peer-chaincodedev=true
     ports:
       - 10051:7051
+      - 10052:7052
       - 10053:7053
     volumes:
         - /var/run/:/host/var/run/
