@@ -1,0 +1,25 @@
+docker rm -f $(docker ps -aq)
+
+rm -rf ~/Library/Containers/com.docker.docker/Data/*
+
+--Docker Housekeeping
+docker rm -f $(docker ps -aq)
+--docker rmi -f $(docker images -q)
+
+--remove chaincode images from prior runs
+docker rmi -f $(docker images | grep peer[0-9]-peer[0-9] | awk '{print $3}')
+
+--Clear any cached networks
+docker network prune
+
+--Clear out your previous key value stores that may have cached user enrollment certificates
+rm -rf /tmp/hfc-*
+rm -rf ~/.hfc-key-store)
+
+--Run these to clear docker
+
+docker stop $(docker ps -aq)
+docker rm $(docker ps -aq)
+
+--Delete docker log files
+find /var/lib/docker/containers/ -type f -name "*.log" -delete
