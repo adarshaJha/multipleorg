@@ -12,6 +12,11 @@ You will be provisioning a local network with the following docker container con
 * A SOLO orderer
 * 2 Org (2 Peers per Org)
 
+#### Links
+* [Multi host setup](https://www.cnblogs.com/llongst/p/9608886.html)
+* [HLF on multiple hosts](https://medium.com/@wahabjawed/hyperledger-fabric-on-multiple-hosts-a33b08ef24f)
+* [Multiple peers running in different physical machines](https://www.skcript.com/svr/setting-up-a-blockchain-business-network-with-hyperledger-fabric-and-composer-running-in-multiple-physical-machine/)
+
 #### Artifacts
 * Crypto material has been generated using the **cryptogen** tool from Hyperledger Fabric and mounted to all peers, the orderering node  and CA containers. More details regarding the cryptogen tool are available [here](http://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#crypto-generator).
 * An Orderer genesis block (genesis.block) and channel configuration transaction (mychannel.tx) has been pre generated using the **configtxgen** tool from Hyperledger Fabric and placed within the artifacts folder. More details regarding the configtxgen tool are available [here](https://hyperledger-fabric.readthedocs.io/en/latest/build_network.html#configuration-transaction-generator).
